@@ -6,10 +6,20 @@
         y: 0
     };
     function draw(e){
+        e.preventDefault();
         var x = e.offsetX,
             y = e.offsetY;
         var size = inputPenSize();
-        if(e.which){
+        var touchFlag = e.type.indexOf("touch") !== -1;
+        if(touchFlag){
+            x = e.originalEvent.touches[0].pageX - cv.offset().left;
+            y = e.originalEvent.touches[0].pageY - cv.offset().top;
+            if(e.type === "touchstart"){
+                prev.x = x;
+                prev.y = y;
+            }
+        }
+        if(e.which || touchFlag){
             var ctx = this.getContext('2d');
             var ctx_master = cv_master.get(0).getContext('2d');
             if(e.buttons === 2 || eraseFlag()){
