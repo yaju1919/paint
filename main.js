@@ -49,7 +49,7 @@
             data[i] = rgb[0];
             data[i + 1] = rgb[1];
             data[i + 2] = rgb[2];
-            data[i + 3] = a;
+            if(data[i + 3] === 1) data[i + 3] = a;
         }
         ctx.putImageData(imageData, 0, 0);
         cv_master.get(0).getContext('2d').drawImage(cv.get(0),0,0);
