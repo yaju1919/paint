@@ -115,6 +115,7 @@
         save: "不透明度",
         change: setCSSfilter
     });
+    setCSSfilter();
     addBtn(h_ui,"全消し",function(){
         cv_master.get(0).getContext('2d').clearRect(0, 0, cv.width(), cv.height());
     });
