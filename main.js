@@ -92,8 +92,8 @@
         height: cv_width
     }).bind("contextmenu",function(e){
         return false;
-    }).on("mousedown",draw).on("mousemove",draw);
-    $(window).on("mouseup",commitCanvas);
+    }).on("mousedown mousemove touchstart touchmove",draw);
+    $(window).on("mouseup touchend",commitCanvas);
     //--------------------------------------------------------------------------------------------------
     var h_ui = $("<div>").appendTo(h).css({
         backgroundColor: "white",
