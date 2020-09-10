@@ -43,13 +43,13 @@
         var imageData = ctx.getImageData(0, 0, cv.width(), cv.height());
         var data = imageData.data;
         var rgb = yaju1919.getRGB(jqInputColor.val());
-        var a = inputColorAlpha() * 255;
+        var a = inputColorAlpha();
         for (var i = 0; i < data.length; i += 4) {
             if(data[i + 3] === 0) continue;
             data[i] = rgb[0];
             data[i + 1] = rgb[1];
             data[i + 2] = rgb[2];
-            if(data[i + 3] === 1) data[i + 3] = a;
+            data[i + 3] *= a;
         }
         ctx.putImageData(imageData, 0, 0);
         cv_master.get(0).getContext('2d').drawImage(cv.get(0),0,0);
@@ -116,7 +116,9 @@
         step: 0.01,
         value: 1,
         save: "不透明度",
-        change: setCSSfilter
+        change: function(){
+            if(inputColorAlpha) setCSSfilter();
+        }
     });
     setCSSfilter();
     var eraseFlag = yaju1919.addInputBool(h_ui,{
