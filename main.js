@@ -29,12 +29,6 @@
         prev.x = x;
         prev.y = y;
     }
-    function setColor(){
-        var rgb = yaju1919.getRGB(jqInputColor.val());
-        $(this).css({
-            filter: new Solver(new Color(rgb[0], rgb[1], rgb[2])).solve().filter + ` opacity(${inputColorAlpha()*100}%)`
-        });
-    }
     function commitCanvas(){
         var ctx = cv.get(0).getContext('2d');
         var imageData = ctx.getImageData(0, 0, cv.width(), cv.height());
@@ -89,7 +83,7 @@
         height: cv_width
     }).bind("contextmenu",function(e){
         return false;
-    }).on("mousedown",draw).on("mousemove",draw).on("mousedown",setColor);
+    }).on("mousedown",draw).on("mousemove",draw);
     $(window).on("mouseup",commitCanvas);
     //--------------------------------------------------------------------------------------------------
     var h_ui = $("<div>").appendTo(h).css({
@@ -105,6 +99,11 @@
     });
     var jqInputColor = $("<input>").appendTo($("<div>").appendTo(h_ui).text("色：")).attr({
         type: "color"
+    }).on("change",function(){
+        var rgb = yaju1919.getRGB(jqInputColor.val());
+        cv.css({
+            filter: new Solver(new Color(rgb[0], rgb[1], rgb[2])).solve().filter + ` opacity(${inputColorAlpha()*100}%)`
+        });
     });
     var inputColorAlpha = yaju1919.addInputRange(h_ui,{
         title: "不透明度",
