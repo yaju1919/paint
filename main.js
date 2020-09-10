@@ -29,6 +29,12 @@
         prev.x = x;
         prev.y = y;
     }
+    function setCSSfilter(){
+        var rgb = yaju1919.getRGB(jqInputColor.val());
+        cv.css({
+            filter: new Solver(new Color(rgb[0], rgb[1], rgb[2])).solve().filter + ` opacity(${inputColorAlpha()*100}%)`
+        });
+    }
     function commitCanvas(){
         var ctx = cv.get(0).getContext('2d');
         var imageData = ctx.getImageData(0, 0, cv.width(), cv.height());
@@ -99,19 +105,15 @@
     });
     var jqInputColor = $("<input>").appendTo($("<div>").appendTo(h_ui).text("色：")).attr({
         type: "color"
-    }).on("change",function(){
-        var rgb = yaju1919.getRGB(jqInputColor.val());
-        cv.css({
-            filter: new Solver(new Color(rgb[0], rgb[1], rgb[2])).solve().filter + ` opacity(${inputColorAlpha()*100}%)`
-        });
-    });
+    }).on("change",setCSSfilter);
     var inputColorAlpha = yaju1919.addInputRange(h_ui,{
         title: "不透明度",
         min: 0,
         max: 1,
         step: 0.01,
         value: 1,
-        save: "不透明度"
+        save: "不透明度",
+        change: setCSSfilter
     });
     addBtn(h_ui,"全消し",function(){
         cv_master.get(0).getContext('2d').clearRect(0, 0, cv.width(), cv.height());
