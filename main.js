@@ -12,18 +12,21 @@
         if(e.which){
             var ctx = this.getContext('2d');
             var ctx_master = cv_master.get(0).getContext('2d');
-            if(e.buttons === 2) ctx = ctx_master;
-            ctx_master.globalCompositeOperation = e.buttons === 2 ? 'destination-out' : 'source-over';
-            ctx.fillStyle = "black";
-            ctx.strokeStyle = "black";
+            if(e.buttons === 2 || eraseFlag()){
+                ctx = ctx_master;
+                ctx_master.globalCompositeOperation = 'destination-out';
+            }
+            else ctx_master.globalCompositeOperation = 'source-over';
             ctx.beginPath();
             ctx.moveTo(prev.x, prev.y);
             ctx.lineTo(x,y);
             ctx.lineWidth = size;
+            ctx.strokeStyle = "black";
             ctx.stroke();
             ctx.beginPath();
             ctx.arc(x, y, size / 2, 0, 2 * Math.PI);
             ctx.closePath();
+            ctx.fillStyle = "black";
             ctx.fill();
         }
         prev.x = x;
@@ -116,6 +119,10 @@
         change: setCSSfilter
     });
     setCSSfilter();
+    var eraseFlag = yaju1919.addInputBool(h_ui,{
+        title: "消しゴム",
+        save: "消しゴム",
+    });
     addBtn(h_ui,"全消し",function(){
         cv_master.get(0).getContext('2d').clearRect(0, 0, cv.width(), cv.height());
     });
